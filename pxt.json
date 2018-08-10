@@ -10,7 +10,7 @@
     "files": [
         "README.md",
         "layoutdesigner.ts",
-        "neopixel.ts",
+        //"neopixel.ts",
         "_locales/ja/neopixel-strings.json",
         "_locales/de/neopixel-strings.json",
         "_locales/de/neopixel-jsdoc-strings.json"
