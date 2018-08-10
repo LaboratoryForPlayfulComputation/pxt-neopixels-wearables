@@ -1,7 +1,7 @@
 {
     "name": "neopixel-wearables",
     "version": "0.0.5",
-    "description": "Addition blocks for using the AdaFruit NeoPixel driver with complex patterns of lights and animations",
+    "description": "Additional blocks for using the AdaFruit NeoPixel driver with complex patterns of lights and animations",
     "license": "MIT",
     "dependencies": {
         "core": "*",
@@ -9,8 +9,8 @@
     },
     "files": [
         "README.md",
-        "neopixel.ts",
         "layoutdesigner.ts",
+        "neopixel.ts",
         "_locales/ja/neopixel-strings.json",
         "_locales/de/neopixel-strings.json",
         "_locales/de/neopixel-jsdoc-strings.json"
