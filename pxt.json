@@ -26,5 +26,10 @@
             }
         }
     },
-    "public": true
+    "public": true,
+    "extension": {
+        "namespace": "layoutdesigner",
+        "label": "Neopixel Layout Designer",
+        "localUrl": "http://127.0.0.1:8080/index.html?d"
+    }
 }
