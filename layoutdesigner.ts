@@ -8,7 +8,8 @@ namespace layoutdesigner {
      */
     //% blockId="stub" block="stub" 
     //% weight=85 blockGap=8
-    export function stub(): void {
-        //stub
+    //% blockNamespace=layoutdesigner inBasicCategory=true
+    export function stub(num: number): number {
+        return num;
     }
 }
