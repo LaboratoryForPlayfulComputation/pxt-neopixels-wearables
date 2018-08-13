@@ -1,6 +1,6 @@
 {
     "name": "neopixel-wearables",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "description": "Additional blocks for using the AdaFruit NeoPixel driver with complex patterns of lights and animations",
     "license": "MIT",
     "dependencies": {
@@ -23,6 +23,6 @@
     "public": true,
     "extension": {
         "namespace": "layoutdesigner",
-        "label": "Test"
+        "label": "Layout Designer"
     }
 }
