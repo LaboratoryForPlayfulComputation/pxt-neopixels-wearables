@@ -1,3 +1,5 @@
+https://laboratoryforplayfulcomputation.github.io/pxt-neopixels-wearables/  
+
 ## Supported targets
 
 * for PXT/microbit
