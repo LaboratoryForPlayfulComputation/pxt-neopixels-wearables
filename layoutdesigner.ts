@@ -6,10 +6,10 @@ namespace layoutdesigner {
     /**
      * 
      */
-    //% blockId="stub" block="stub" 
+    //% blockId="stub" block="stubtest %num" 
     //% weight=85 blockGap=8
     //% blockNamespace=layoutdesigner inBasicCategory=true
-    export function test(num: number): number {
+    export function stub(num: number): number {
         return num;
     }
 }
