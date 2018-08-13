@@ -9,7 +9,7 @@ namespace layoutdesigner {
     //% blockId="stub" block="stub" 
     //% weight=85 blockGap=8
     //% blockNamespace=layoutdesigner inBasicCategory=true
-    export function stub(num: number): number {
+    export function test(num: number): number {
         return num;
     }
 }
