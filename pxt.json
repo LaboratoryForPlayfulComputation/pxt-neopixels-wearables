@@ -22,6 +22,7 @@
     },
     "public": true,
     "extension": {
+        "namespace": "basic",
         "label": "Test"
     }
 }
