@@ -22,7 +22,6 @@
     },
     "public": true,
     "extension": {
-        "label": "Neopixel Layout Designer",
-        "localUrl": "http://codewitch.cool/"
+        "label": "Test"
     }
 }
