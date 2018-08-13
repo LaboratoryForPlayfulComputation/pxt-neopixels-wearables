@@ -9,13 +9,7 @@
     },
     "files": [
         "README.md",
-        "layoutdesigner.ts",
-        "_locales/ja/neopixel-strings.json",
-        "_locales/de/neopixel-strings.json",
-        "_locales/de/neopixel-jsdoc-strings.json"
-    ],
-    "testFiles": [
-        "neotest.ts"
+        "layoutdesigner.ts"
     ],
     "yotta": {
         "config": {
