@@ -3,13 +3,30 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" integrity="sha256-5+W3JHnvGYIJkVxUBsw+jBi9+pOlu9enPX3vZapXj5M="
         crossorigin="anonymous" />
+    <script src="p5.min.js"></script>
 </head>
 <style>
 </style>
 
 <body>
-    heyyy
     <script>
+
+
+        function setup() {
+            createCanvas(640, 480);
+        }
+
+        function draw() {
+            if (mouseIsPressed) {
+                fill(0);
+            } else {
+                fill(255);
+            }
+            ellipse(mouseX, mouseY, 80, 80);
+        }
+
+
+
         var extId = window.location.hash.substr(1);
         var hosted = false;
         var idToType = {};
