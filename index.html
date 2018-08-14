@@ -1,31 +1,175 @@
 <html>
-
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" integrity="sha256-5+W3JHnvGYIJkVxUBsw+jBi9+pOlu9enPX3vZapXj5M="
         crossorigin="anonymous" />
     <script src="p5.min.js"></script>
+    <script src="p5.dom.js"></script>
 </head>
-<style>
-</style>
-
-<body>
+<body bgcolor="#000000">
+    <button id="ledbutton" onmousedown="drawLEDs()">Draw LEDs</button>
+    <button id="wirebutton" onmousedown="drawWires()">Draw wires</button>
     <script>
+        /* start of p5js stuff */
 
+        var rectsize = 12;
+        var drawingLeds = false;
+        var drawingWires = false;
+        var connectingleds = false;
+        var firstled = null;
+        var selectedLED = null;
+        var prevSelectedLED = null;
+        var LEDs = [];
+        var wires = [];
 
         function setup() {
             createCanvas(640, 480);
+            stroke(0);
         }
 
         function draw() {
-            if (mouseIsPressed) {
-                fill(0);
-            } else {
-                fill(255);
+            background(255);
+            for (var i = 0; i < LEDs.length; i++){
+                LEDs[i].draw();
             }
-            ellipse(mouseX, mouseY, 80, 80);
+            for (var i = 0; i < wires.length; i++){
+                wires[i].draw();
+            }
+        }
+
+        function drawLEDs(){
+            drawingLeds = true;
+            drawingWires = false;
+        }
+
+        function drawWires(){
+            drawingWires = true;
+            drawingLeds = false;
+        }
+
+        function Wire(led1, led2){
+            this.led1 = led1;
+            this.led2 = led2;
+            this.led1.nextLED = led2;
+            this.led2.prevLED = led1;
+
+            this.draw = function() {
+                line(this.led1.x, this.led1.y, this.led2.x, this.led2.y);
+            }
+        }
+
+        function LED(x, y){
+            this.x = x;
+            this.y = y;
+            this.leftEdge = this.x - (rectsize/2);
+            this.rightEdge = this.x + (rectsize/2);
+            this.topEdge = this.y - (rectsize/2);
+            this.bottomEdge = this.y + (rectsize/2);
+            this.prevLED = null;
+            this.nextLED = null;
+            this.selected = false;
+
+            this.draw = function() {
+                if (this.isSelected()){
+                    stroke(255, 150, 0);
+                    fill(255, 150, 0);
+                    rect(this.leftEdge-2, this.topEdge-2, rectsize+4, rectsize+4);
+                    stroke(0);
+                    fill(255, 255, 0);
+                    rect(this.leftEdge, this.topEdge, rectsize, rectsize);
+                }
+                else {
+                    rect(this.leftEdge, this.topEdge, rectsize, rectsize);
+                }
+            }
+
+            this.clicked = function() {
+                if ((mouseX >= this.leftEdge) && (mouseX <= this.rightEdge) && (mouseY >= this.topEdge) && (mouseY <= this.bottomEdge)){
+                    this.selected = true;
+                    return true;
+                }
+                this.selected = false;
+                return false;
+            }
+
+            this.isSelected = function() {
+                return this.selected;
+            }
+
+            this.setNextLED = function(led) {
+                this.nextLED = led;
+            }
+
+            this.setPrevLED = function(led) {
+                this.prevLED = led;
+            }
+        }
+
+        function mouseClicked() {
+            firstMouseX = mouseX;
+            firstMouseY = mouseY;
+            if (drawingLeds){
+                    fill(255, 255, 0);
+                    var led = new LED(mouseX, mouseY);
+                    LEDs.push(led);
+            } else if (drawingWires) {
+                var noselectedLEDs = true;
+                for (var i = 0; i < LEDs.length; i++){
+                    if (LEDs[i].clicked()){
+                        if (selectedLED){
+                            prevSelectedLED = selectedLED;
+                            selectedLED = LEDs[i];
+                            if (prevSelectedLED != selectedLED){
+                                checkExistingWiring(prevSelectedLED, selectedLED);
+                            }
+                        }
+                        selectedLED = LEDs[i];
+                        noselectedLEDs = false;
+                    }
+                }
+                if (noselectedLEDs == true){
+                    selectedLED = null;
+                    prevSelectedLED = null;
+                }
+            }  
+        }    
+
+        /* Checks the wiring configuration (if any) between 2 LEDs */
+        function checkExistingWiring(ledClicked1, ledClicked2){
+            // if switching next led of an led
+            if (ledClicked1.nextLED && ledClicked1.nextLED != ledClicked2){
+                for (var i = 0; i < wires.length; i++){
+                    if (wires[i].led1 == ledClicked1){
+                        wires.splice(i, 1);
+                    }
+                }         
+            }
+            // if both leds have been previously wired the opposite way
+            else if (ledClicked1.prevLED == ledClicked2 && ledClicked2.nextLED == ledClicked1){
+                for (var i = 0; i < wires.length; i++){
+                    if (wires[i].led2 == ledClicked1 && wires[i].led1 == ledClicked2){
+                        ledClicked1.prevLED = null;
+                        ledClicked2.nextLED = null;
+                        wires.splice(i, 1);
+
+                    }
+                } 
+            }
+            // if both leds are wired the same way
+            else if (ledClicked2.prevLED == ledClicked1 && ledClicked1.nextLED == ledClicked2){
+                for (var i = 0; i < wires.length; i++){
+                    if (wires[i].led1 == firstled && wires[i].led2 == led){
+                        wires.splice(i, 1);
+                    }
+                }
+            }
+            var wire = new Wire(prevSelectedLED, selectedLED);
+            wires.push(wire);
         }
 
 
+        /* end of p5js stuff */
+
+        /* start of iframe communication stuff */
 
         var extId = window.location.hash.substr(1);
         var hosted = false;
@@ -86,8 +230,8 @@
             sel.addRange(range);
         }
 
+        /* end of iframe communication stuff */
  
     </script>
 </body>
-
 </html>
