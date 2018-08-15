@@ -277,9 +277,7 @@ namespace layoutdesigner {
             if (document.readyState != "complete") return;
 
             window.addEventListener("message", receiveMessage, false);
-            output.onclick = function () { selectOutput(); }
-
-            sendRequest("extinit")
+            sendRequest("extinit");
         }
 
         /* end of iframe communication stuff */
