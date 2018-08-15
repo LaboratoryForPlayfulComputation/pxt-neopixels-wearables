@@ -9,6 +9,7 @@
     <button id="ledbutton" onmousedown="drawLEDs()">Draw LEDs</button>
     <button id="wirebutton" onmousedown="drawWires()">Draw wires</button>
     <button id="clearbutton" onmousedown="clear()">Clear</button>
+    <button id="savebutton" onmousedown="save()">Save</button>
 
     <script>
         /* start of p5js stuff */
@@ -184,6 +185,11 @@
             }
         }
 
+        /* button event for clicking save */
+        function save() {
+            saveUserCode("test", "test");
+        }
+
         /* end of p5js stuff */
 
         /* start of iframe communication stuff */
@@ -277,7 +283,7 @@ namespace layoutdesigner {
             if (document.readyState != "complete") return;
 
             window.addEventListener("message", receiveMessage, false);
-            sendRequest("extinit");
+            sendRequest("extinit")
         }
 
         /* end of iframe communication stuff */
