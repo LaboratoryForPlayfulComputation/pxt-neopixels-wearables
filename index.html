@@ -294,6 +294,7 @@
 
 
         function renderUserCode() {
+            console.log("render code function");
             var ts = `
 namespace layoutdesigner {
 
@@ -314,10 +315,11 @@ namespace layoutdesigner {
             sendRequest("extwritecode", {
                 code: ts,
                 json: JSON.stringify(usercode, null, 2)
-            })
+            });
             preview.innerText = 'Layout saved...';
             output.innerText = ts;
             outputext.style.display = 'block';
+            console.log("save function");
         }
 
         /* onload functions, send initialized message back to editor */
