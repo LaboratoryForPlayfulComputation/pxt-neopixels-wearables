@@ -2,7 +2,7 @@ var extId = window.location.hash.substr(1);
 var idToType = {};
 var usercode = {};
 
-console.log(`extension id: ${this.extId}`)
+console.log(`extension id: ${this.extId}`);
 window.addEventListener(
     "message",
     ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
@@ -24,23 +24,14 @@ function receiveMessage(ev) {
                 break;
             case "exthidden":
                 console.log('hidden');
-                break;
-            case "extinit":
-                //sendRequest("extdatastream");
-                sendRequest("extreadcode");
-                break;
-            case "extreadcode":
-                // received existing code
-                var usercode = data;
-                console.log(usercode);
-                break;            
+                break;           
             default:
                 break;
         }
         return;
     }
 
-    /*var action = idToType[ev.id];
+    var action = idToType[ev.id];
     console.log(`msg: ${action}`)
     delete idToType[ev.id];
     switch (action) {
@@ -54,10 +45,10 @@ function receiveMessage(ev) {
             console.log(usercode);
             break;
         default: break;
-    }*/
+    }
 }
 
-function sendRequest(action, body=null) {
+function sendRequest(action) {
     var id = Math.random().toString();
     idToType[id] = action;
     var msg = {
@@ -65,10 +56,21 @@ function sendRequest(action, body=null) {
         action: action,
         extId: extId,
         response: true,
-        id: id,
-        body
+        id: id
     };
-    //if (window.parent && window != window.parent)
+    window.parent.postMessage(msg, "*");
+}
+
+function sendGeneratedCode(body) {
+    var id = Math.random().toString();
+    idToType[id] = action;
+    var msg = {
+        id: id,
+        type: "pxtpkgext",
+        action: "extwritecode",
+        extId: extId,
+        body: body
+    }
     window.parent.postMessage(msg, "*");
 }
 
@@ -84,14 +86,14 @@ export function testing(num: number): number {
     return num;
 }
 }` 
-        return ts;
-    }
+    return ts;
+}
 
 function saveUserCode() {            
-    var ts = renderUserCode();
+    /*var ts = renderUserCode();
     sendRequest("extwritecode", {
         code: ts,
         json: JSON.stringify(usercode, null, 2)
-    });
-    sendRequest("extreadcode");
+    });*/
+    sendGeneratedCode({code: renderUserCode(), json: JSON.stringify(usercode, null, 2)});
 }
