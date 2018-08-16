@@ -255,6 +255,7 @@
 
 
         function sendRequest(action, body=null) {
+            console.log("body: ", body);
             var id = Math.random().toString();
             idToType[id] = action;
             var msg = {
@@ -265,8 +266,8 @@
                 id: id,
                 body
             };
-            if (window.parent && window != window.parent)
-                window.parent.postMessage(msg, "*");
+            //if (window.parent && window != window.parent)
+            window.parent.postMessage(msg, "*");
         }
 
 
