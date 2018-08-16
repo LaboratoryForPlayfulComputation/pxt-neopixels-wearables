@@ -95,5 +95,7 @@ function saveUserCode() {
         code: ts,
         json: JSON.stringify(usercode, null, 2)
     });*/
-    sendGeneratedCode({code: renderUserCode(), json: JSON.stringify(usercode, null, 2)});
+    var ts = renderUserCode();
+    console.log("Saving generated blocks: ", ts);
+    sendGeneratedCode({code: ts, json: JSON.stringify(usercode, null, 2)});
 }
