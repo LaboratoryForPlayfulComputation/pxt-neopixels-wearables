@@ -1,7 +1,4 @@
-/* start of iframe communication stuff */
-
 var extId = window.location.hash.substr(1);
-var hosted = false;
 var idToType = {};
 var usercode = {};
 
@@ -24,13 +21,11 @@ function receiveMessage(ev) {
                 break;
             case "extshown":
                 console.log('shown')
-                //connected = true;
-                this.sendRequest("extdatastream");
-                this.sendRequest("extreadcode")
+                sendRequest("extdatastream");
+                sendRequest("extreadcode")
                 break;
             case "exthidden":
                 console.log('hidden')
-                //connected = false;
                 break;
             default:
                 break;
@@ -50,7 +45,6 @@ function receiveMessage(ev) {
             // received existing code
             var usercode = data;
             console.log(usercode);
-            //loadBlocks(usercode.resp.code, usercode.resp.json);
             break;
         default: break;
     }
@@ -104,5 +98,3 @@ function saveUserCode() {
     });
     console.log("save function");
 }
-
-/* end of iframe communication stuff */
