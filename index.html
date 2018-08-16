@@ -199,7 +199,15 @@
         var idToType = {};
         var usercode = {};
 
-        function receiveMessage(ev) {
+        console.log(`extension id: ${this.extId}`)
+        window.addEventListener(
+            "message",
+            ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
+            false);
+        sendRequest("extinit");
+        
+
+        /*function receiveMessage(ev) {
             var msg = ev.data;
             var action = idToType[msg.id];
             if (action) {
@@ -216,19 +224,49 @@
                 }
                 delete idToType[msg.id];
             }
+        }*/
+
+    function receiveMessage(ev) {
+        if (ev.event) {
+            switch (ev.event) {
+                case "extconsole":
+                    var cons = ev;
+                    // drop sim
+                    if (cons.body.sim) return;
+                    break;
+                case "extshown":
+                    console.log('shown')
+                    //connected = true;
+                    this.sendRequest("extdatastream");
+                    this.sendRequest("extreadcode")
+                    break;
+                case "exthidden":
+                    console.log('hidden')
+                    //connected = false;
+                    break;
+                default:
+                    break;
+            }
+            return;
         }
 
-        function mkRequest(action) {
-            var id = Math.random().toString();
-            idToType[id] = action;
-            return {
-                type: "pxtpkgext",
-                action: action,
-                extId: extId,
-                response: true,
-                id: id
-            }
+        var action = idToType[ev.id];
+        console.log(`msg: ${action}`)
+        delete idToType[ev.id];
+        switch (action) {
+            case "extinit":
+                sendRequest("extdatastream");
+                sendRequest("extreadcode");
+                break;
+            case "extreadcode":
+                // received existing code
+                var usercode = data;
+                //loadBlocks(usercode.resp.code, usercode.resp.json);
+                break;
+            default: break;
         }
+    }
+
 
         function isIFrame() {
             try {
@@ -238,12 +276,22 @@
             }
         }
 
-        function sendRequest(action, body) {
-            if (!isIFrame()) return;
-            var msg = mkRequest(action);
-            msg.body = body;
-            window.parent.postMessage(msg, "*");
+
+        function sendRequest(action, body=null) {
+            var id = Math.random().toString();
+            idToType[id] = action;
+            var msg = {
+                type: "pxtpkgext",
+                action: action,
+                extId: extId,
+                response: true,
+                id: id,
+                body
+            };
+            if (window.parent && window != window.parent)
+                window.parent.postMessage(msg, "*");
         }
+
 
         function renderUserCode() {
             var ts = `
@@ -273,12 +321,12 @@ namespace layoutdesigner {
         }
 
         /* onload functions, send initialized message back to editor */
-        document.onreadystatechange = function (er) {
+        /*document.onreadystatechange = function (er) {
             if (document.readyState != "complete") return;
 
             window.addEventListener("message", receiveMessage, false);
             sendRequest("extinit")
-        }
+        }*/
 
         /* end of iframe communication stuff */
  
