@@ -9,7 +9,7 @@
     <button id="ledbutton" onmousedown="drawLEDs()">Draw LEDs</button>
     <button id="wirebutton" onmousedown="drawWires()">Draw wires</button>
     <button id="clearbutton" onmousedown="clear()">Clear</button>
-    <button id="savebutton" onmousedown="save()">Save</button>
+    <button id="savebutton" onmousedown="saveTest()">Save</button>
 
     <script>
         /* start of p5js stuff */
@@ -186,7 +186,8 @@
         }
 
         /* button event for clicking save */
-        function save() {
+        function saveTest() {
+            
             saveUserCode("test", "test");
         }
 
