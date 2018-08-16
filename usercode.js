@@ -63,7 +63,7 @@ function sendRequest(action) {
 
 function sendGeneratedCode(body) {
     var id = Math.random().toString();
-    idToType[id] = action;
+    idToType[id] = "extwritecode";
     var msg = {
         id: id,
         type: "pxtpkgext",
