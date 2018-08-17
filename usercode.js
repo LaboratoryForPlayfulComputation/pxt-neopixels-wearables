@@ -11,15 +11,15 @@ function receivedResponse(resp) {
 }
 
 window.onload = function(e){ 
-    console.log("window.onload", e, Date.now()); 
     window.addEventListener("message", function(ev) {
         var resp = ev.data;
-        if (resp && resp.type === "pxtpkgext")
+        if (resp && resp.type === "pxtpkgext") {
+            console.log("resp: ", resp);
             receivedResponse(resp);
+        }
         }, false);
-        sendRequest("extinit");
+    sendRequest("extinit");
 }
-
 
 function sendRequest(action) {
     var id = Math.random().toString();
