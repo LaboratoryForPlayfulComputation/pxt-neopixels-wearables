@@ -5,8 +5,7 @@ var usercode = {};
 console.log(`extension id: ${this.extId}`);
 window.addEventListener(
     "message",
-    //ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
-    ev => ev.type == "pxtpkgext" ? receiveMessage(ev) : undefined,
+    ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
     false);
 sendRequest("extinit");
 
@@ -19,12 +18,12 @@ function receiveMessage(ev) {
                 if (cons.body.sim) return;
                 break;
             case "extshown":
-                console.log('shown');
-                //sendRequest("extdatastream");
+                console.log('pxt-neopixels-wearables shown');
+                sendRequest("extdatastream");
                 sendRequest("extreadcode");
                 break;
             case "exthidden":
-                console.log('hidden');
+                console.log('pxt-neopixels-wearables hidden');
                 break;           
             default:
                 break;
@@ -33,7 +32,7 @@ function receiveMessage(ev) {
     }
 
     var action = idToType[ev.id];
-    console.log(`msg: ${action}`)
+    console.log("msg: ", action);
     delete idToType[ev.id];
     switch (action) {
         case "extinit":
