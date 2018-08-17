@@ -3,14 +3,34 @@ var idToType = {};
 var usercode = {};
 
 console.log(`extension id: ${this.extId}`);
-window.addEventListener(
+/*window.addEventListener(
     "message",
     ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
-    false);
+    false);*/
+window.addEventListener("message", receiveMessage, false);
 sendRequest("extinit");
 
 function receiveMessage(ev) {
-    console.log(ev);
+    var msg = ev.data;
+    var action = idToType[msg.id];
+    if (action) {
+        console.debug("msg received: ", action);
+        switch (action) {
+            case "extinit":
+                //hosted = true;
+                console.log('host connection completed')
+                sendRequest("extreadusercode");
+                break;
+            case "extreadusercode":
+                usercode = msg.resp || {};
+                break;
+        }
+        delete idToType[msg.id];
+    }
+}
+
+/*function receiveMessage(ev) {
+    console.log("msg id: ", ev.id);
     if (ev.event) {
         switch (ev.event) {
             case "extconsole":
@@ -46,7 +66,7 @@ function receiveMessage(ev) {
             break;
         default: break;
     }
-}
+}*/
 
 function sendRequest(action) {
     var id = Math.random().toString();
