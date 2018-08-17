@@ -2,7 +2,7 @@ var extId = window.location.hash.substr(1);
 var idToType = {};
 var usercode = {};
 
-console.log(`extension id: ${this.extId}`);
+console.log("extension id: ", extId);
 /*window.addEventListener(
     "message",
     ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
