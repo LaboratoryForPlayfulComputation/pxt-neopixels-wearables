@@ -5,7 +5,8 @@ var usercode = {};
 console.log(`extension id: ${this.extId}`);
 window.addEventListener(
     "message",
-    ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
+    //ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
+    ev => ev.type == "pxtpkgext" ? receiveMessage(ev) : undefined,
     false);
 sendRequest("extinit");
 
