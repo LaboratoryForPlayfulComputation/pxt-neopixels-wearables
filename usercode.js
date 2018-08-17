@@ -3,14 +3,23 @@ var idToType = {};
 var usercode = {};
 
 console.log("extension id: ", extId);
-/*window.addEventListener(
-    "message",
-    ev => ev.data.type == "pxtpkgext" ? receiveMessage(ev.data) : undefined,
-    false);*/
-window.addEventListener("message", receiveMessage, false);
+//window.addEventListener("message", receiveMessage, false);
+
+function receivedResponse(resp) {
+    console.log(resp);
+    if (resp.action === "extinit")
+      console.log('initialized!')
+  }
+  window.addEventListener("message", function(ev) {
+    var resp = ev.data;
+    if (resp && resp.type === "pxtpkgext")
+      receivedResponse(resp);
+  }, false);
+  
 sendRequest("extinit");
 
-function receiveMessage(ev) {
+
+/*function receiveMessage(ev) {
     var msg = ev.data;
     var action = idToType[msg.id];
     console.debug("msg received: ", ev.data);
@@ -28,7 +37,7 @@ function receiveMessage(ev) {
         }
         delete idToType[msg.id];
     }
-}
+}*/
 
 /*function receiveMessage(ev) {
     console.log("msg id: ", ev.id);
