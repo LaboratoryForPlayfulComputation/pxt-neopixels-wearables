@@ -13,8 +13,9 @@ sendRequest("extinit");
 function receiveMessage(ev) {
     var msg = ev.data;
     var action = idToType[msg.id];
+    console.debug("msg received: ", ev.data);
     if (action) {
-        console.debug("msg received: ", action);
+        //console.debug("msg received: ", action);
         switch (action) {
             case "extinit":
                 //hosted = true;
