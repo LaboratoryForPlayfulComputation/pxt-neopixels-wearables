@@ -3,84 +3,26 @@ var idToType = {};
 var usercode = {};
 
 console.log("extension id: ", extId);
-//window.addEventListener("message", receiveMessage, false);
 
 function receivedResponse(resp) {
     console.log(resp);
-    if (resp.action === "extinit")
+    if (resp.event === "extinit")
       console.log('initialized!')
-  }
-  window.addEventListener("message", function(ev) {
-    var resp = ev.data;
-    if (resp && resp.type === "pxtpkgext")
-      receivedResponse(resp);
-  }, false);
-  
-sendRequest("extinit");
+}
 
+window.onload = function(e){ 
+    console.log("window.onload", e, Date.now()); 
+    window.addEventListener("message", function(ev) {
+        var resp = ev.data;
+        if (resp && resp.type === "pxtpkgext")
+            receivedResponse(resp);
+        }, false);
+        sendRequest("extinit");
+}
 
-/*function receiveMessage(ev) {
-    var msg = ev.data;
-    var action = idToType[msg.id];
-    console.debug("msg received: ", ev.data);
-    if (action) {
-        //console.debug("msg received: ", action);
-        switch (action) {
-            case "extinit":
-                //hosted = true;
-                console.log('host connection completed')
-                sendRequest("extreadusercode");
-                break;
-            case "extreadusercode":
-                usercode = msg.resp || {};
-                break;
-        }
-        delete idToType[msg.id];
-    }
-}*/
-
-/*function receiveMessage(ev) {
-    console.log("msg id: ", ev.id);
-    if (ev.event) {
-        switch (ev.event) {
-            case "extconsole":
-                var cons = ev;
-                if (cons.body.sim) return;
-                break;
-            case "extshown":
-                console.log('pxt-neopixels-wearables shown');
-                sendRequest("extdatastream");
-                sendRequest("extreadcode");
-                break;
-            case "exthidden":
-                console.log('pxt-neopixels-wearables hidden');
-                break;           
-            default:
-                break;
-        }
-        return;
-    }
-
-    var action = idToType[ev.id];
-    console.log("msg: ", action);
-    delete idToType[ev.id];
-    switch (action) {
-        case "extinit":
-            sendRequest("extdatastream");
-            sendRequest("extreadcode");
-            break;
-        case "extreadcode":
-            // received existing code
-            var usercode = data;
-            console.log(usercode);
-            break;
-        default: break;
-    }
-}*/
 
 function sendRequest(action) {
     var id = Math.random().toString();
-    idToType[id] = action;
     var msg = {
         type: "pxtpkgext",
         action: action,
@@ -93,7 +35,6 @@ function sendRequest(action) {
 
 function sendGeneratedCode(body) {
     var id = Math.random().toString();
-    idToType[id] = "extwritecode";
     var msg = {
         id: id,
         type: "pxtpkgext",
@@ -120,11 +61,6 @@ export function testing(num: number): number {
 }
 
 function saveUserCode() {            
-    /*var ts = renderUserCode();
-    sendRequest("extwritecode", {
-        code: ts,
-        json: JSON.stringify(usercode, null, 2)
-    });*/
     var ts = renderUserCode();
     console.log("Saving generated blocks: ", ts);
     sendGeneratedCode({code: ts, json: JSON.stringify(usercode, null, 2)});
